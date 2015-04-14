@@ -27,7 +27,8 @@
   "homepage": "https://github.com/mtr/angular-iscroll",
   "dependencies": {
     "angular": ">=1.2",
-    "iscroll": "^5.1.3"
+    "iscroll": "^5.1.3",
+    "browserify-shim": "^3.8.2"
   },
   "devDependencies": {
     "angular-messages": "^1.3.9",
