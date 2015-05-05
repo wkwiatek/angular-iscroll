@@ -1,5 +1,5 @@
 /**
- * @license angular-iscroll v1.2.3, 2015-03-05T16:21:09+0100
+ * @license angular-iscroll v1.2.4, 2015-05-05T13:31:56+0200
  * (c) 2015 Martin Thorsen Ranang <mtr@ranang.org>
  * License: MIT
  */
@@ -241,5 +241,4 @@
         .provider('iScrollService', iScrollServiceProvider)
         .constant('iScrollSignals', signals);
 }));
-
 
