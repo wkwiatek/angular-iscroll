@@ -98,6 +98,7 @@
                 refresh: _refresh
             };
         }
+        iScrollService.$inject = ["$rootScope", "$log", "iScrollSignals"];
 
         this.$get = iScrollService;
     }
@@ -109,6 +110,8 @@
     /* @ngInject */
     function iscroll($rootScope, $timeout, $interval, $log, iScrollSignals,
                      iScrollService) {
+
+        var refreshIntervals = [];
 
         function asyncRefresh(instance, options) {
             $timeout(function _refreshAfterInitialRender() {
@@ -131,6 +134,10 @@
             }
 
             function _destroyInstance() {
+                refreshIntervals.forEach(function(refreshInterval) {
+                  $interval.cancel(refreshInterval);
+                });
+
                 if (angular.isDefined(scope.iscrollInstance)) {
                     delete scope.iscrollInstance;
                 }
@@ -164,7 +171,7 @@
             instance.on('scrollEnd', _enableRefresh);
 
             if (options.directive.refreshInterval !== false) {
-                $interval(_refreshInstance, options.directive.refreshInterval);
+                refreshIntervals.push($interval(_refreshInstance, options.directive.refreshInterval));
             }
 
             var deregistrators = [
@@ -222,10 +229,10 @@
             }
         }
     }
+    iscroll.$inject = ["$rootScope", "$timeout", "$interval", "$log", "iScrollSignals", "iScrollService"];
 
     return angular.module('angular-iscroll', [])
         .directive('iscroll', iscroll)
         .provider('iScrollService', iScrollServiceProvider)
         .constant('iScrollSignals', signals);
 }));
-

@@ -1,5 +1,5 @@
 /**
- * @license angular-iscroll v1.2.3, 2015-05-05T13:27:07+0200
+ * @license angular-iscroll v1.2.4, 2015-05-05T13:31:56+0200
  * (c) 2015 Martin Thorsen Ranang <mtr@ranang.org>
  * License: MIT
  */
@@ -116,6 +116,8 @@
     function iscroll($rootScope, $timeout, $interval, $log, iScrollSignals,
                      iScrollService) {
 
+        var refreshIntervals = [];
+
         function asyncRefresh(instance, options) {
             $timeout(function _refreshAfterInitialRender() {
                 instance.refresh();
@@ -137,6 +139,10 @@
             }
 
             function _destroyInstance() {
+                refreshIntervals.forEach(function(refreshInterval) {
+                  $interval.cancel(refreshInterval);
+                });
+
                 if (angular.isDefined(scope.iscrollInstance)) {
                     delete scope.iscrollInstance;
                 }
@@ -170,7 +176,7 @@
             instance.on('scrollEnd', _enableRefresh);
 
             if (options.directive.refreshInterval !== false) {
-                $interval(_refreshInstance, options.directive.refreshInterval);
+                refreshIntervals.push($interval(_refreshInstance, options.directive.refreshInterval));
             }
 
             var deregistrators = [
@@ -235,5 +241,4 @@
         .provider('iScrollService', iScrollServiceProvider)
         .constant('iScrollSignals', signals);
 }));
-
 
